@@ -9,6 +9,9 @@ class Chat(models.Model):
     media = models.FileField(upload_to='media/chats/', blank=True, null=True)  # For images, videos, or files
     created_at = models.DateTimeField(auto_now_add=True)
 
+    class Meta:
+        verbose_name_plural = "Chats"
+
     def __str__(self):
         return f'Message from {self.sender} to {self.recipient} at {self.created_at}'
-
+    

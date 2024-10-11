@@ -7,10 +7,10 @@ from django.db import models
 class Notification(models.Model):
     recipient = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='notifications')
     actor = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='actor_notifications')
-    verb = models.CharField(max_length=255)  # Describes the action
+    verb = models.CharField(max_length=255)
     timestamp = models.DateTimeField(auto_now_add=True)
+    is_read = models.BooleanField(default=False)
 
-    # Generic ForeignKey
     target_content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
     target_object_id = models.PositiveIntegerField()
     target = GenericForeignKey('target_content_type', 'target_object_id')

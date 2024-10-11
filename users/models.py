@@ -6,6 +6,7 @@ from django.db import models
 class CustomUser(AbstractUser):
     full_name = models.CharField(max_length=255, blank=True)
     bio = models.TextField(blank=True)
+    email = models.EmailField(unique=True, blank=False, null=False)
     profile_picture = models.ImageField(upload_to='profile_pics/', blank=True, null=True)
     followers = models.ManyToManyField('self', symmetrical=False, related_name='following', blank=True)
     location = models.CharField(max_length=255, blank=True)
@@ -17,4 +18,3 @@ class CustomUser(AbstractUser):
     
 class UserProfile(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    

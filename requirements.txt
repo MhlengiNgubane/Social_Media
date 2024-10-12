@@ -1,3 +1,4 @@
 Django==4.2.16
 pytest-django==4.9.0
-djangorestframework==3.15.2
+djangorestframework>=3.12.0
+

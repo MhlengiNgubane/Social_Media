@@ -1,3 +1,4 @@
+import pytest
 from django.contrib.auth import get_user_model
 from django.urls import reverse
 from rest_framework import status
@@ -7,7 +8,9 @@ from posts.models import Comment, Hashtag, Like, Post
 
 User = get_user_model()
 
-class PostsTests(APITestCase):
+@pytest.mark.django_db
+class PostsTest(APITestCase):
+    @pytest.fixture(autouse=True)
     def setUp(self):
         # Create test users
         self.user1 = User.objects.create_user(username='testuser1', password='testpass1', email='testuser1@example.com')

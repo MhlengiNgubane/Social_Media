@@ -1,3 +1,4 @@
+import pytest
 from django.contrib.auth import get_user_model
 from django.urls import reverse
 from rest_framework import status
@@ -7,7 +8,9 @@ from chat.models import Chat
 
 User = get_user_model()
 
-class ChatAPITestCase(APITestCase):
+@pytest.mark.django_db
+class ChatTest(APITestCase):
+    @pytest.fixture(autouse=True)
     def setUp(self):
         self.client = APIClient()
         self.user1 = User.objects.create_user(username='user1', email='user1@example.com', password='testpass1')

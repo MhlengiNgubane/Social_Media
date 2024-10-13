@@ -1,4 +1,3 @@
-import pytest
 from django.contrib.auth import get_user_model
 from django.urls import reverse
 from rest_framework import status
@@ -6,9 +5,7 @@ from rest_framework.test import APITestCase
 
 User = get_user_model()
 
-@pytest.mark.django_db
 class UserTest(APITestCase):
-    @pytest.fixture(autouse=True)
     def setUp(self):
         # Create two users: one for testing and another to follow
         self.user1 = User.objects.create_user(

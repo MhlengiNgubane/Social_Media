@@ -11,27 +11,12 @@ on:
 
 jobs:
   build:
+
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
         python-version: ["3.10.9"]
-
-    services:
-      mysql:
-        image: mysql:8.0
-        env:
-          MYSQL_DATABASE: social
-          MYSQL_ROOT_PASSWORD: Ngcukumane@390
-          MYSQL_USER: root
-          MYSQL_PASSWORD: Ngcukumane@390
-        ports:
-          - 3306:3306
-        options: >-
-          --health-cmd="mysqladmin ping --silent"
-          --health-interval=10s
-          --health-timeout=5s
-          --health-retries=3
 
     steps:
     - uses: actions/checkout@v4
@@ -46,21 +31,10 @@ jobs:
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
     - name: Lint with flake8
       run: |
-        # Stop the build if there are Python syntax errors or undefined names
+        # stop the build if there are Python syntax errors or undefined names
         flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
-        # Exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
+        # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
-    - name: Prepare database
-      run: |
-        # Wait for MySQL to be ready
-        until mysql -h 127.0.0.1 -u root -p'Ngcukumane@390' -e "SHOW DATABASES"; do
-          echo "Waiting for MySQL to be ready..."
-          sleep 5
-        done
     - name: Test with pytest
-      env:
-        DATABASE_URL: mysql://root:Ngcukumane@390@localhost:3307/social
       run: |
-        # Run migrations before testing
-        python manage.py migrate
         pytest

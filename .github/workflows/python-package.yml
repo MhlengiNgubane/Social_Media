@@ -26,7 +26,7 @@ jobs:
           MYSQL_USER: root
           MYSQL_PASSWORD: Ngcukumane@390
         ports:
-          - 3306:3306
+          - 3307:3307
         options: >-
           --health-cmd="mysqladmin ping -h localhost"
           --health-interval=10s

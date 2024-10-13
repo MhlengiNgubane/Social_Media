@@ -22,11 +22,11 @@ jobs:
         image: mysql:8.0
         env:
           MYSQL_DATABASE: social
+          MYSQL_ROOT_PASSWORD: Ngcukumane@390
           MYSQL_USER: root
           MYSQL_PASSWORD: Ngcukumane@390
-          MYSQL_ROOT_PASSWORD: Ngcukumane@390
         ports:
-          - 3307:3307
+          - 3306:3306
         options: >-
           --health-cmd="mysqladmin ping --silent"
           --health-interval=10s
@@ -53,7 +53,7 @@ jobs:
     - name: Prepare database
       run: |
         # Wait for MySQL to be ready
-        until mysql -h 127.0.0.1 -u your_username -p'your_password' -e "SHOW DATABASES"; do
+        until mysql -h 127.0.0.1 -u root -p'Ngcukumane@390' -e "SHOW DATABASES"; do
           echo "Waiting for MySQL to be ready..."
           sleep 5
         done

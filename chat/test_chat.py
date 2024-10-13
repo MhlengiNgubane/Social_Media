@@ -8,9 +8,6 @@ from chat.models import Chat
 
 User = get_user_model()
 
-def test_sample():
-    assert True
-
 @pytest.mark.django_db
 class ChatTest(APITestCase):
     @pytest.fixture(autouse=True)

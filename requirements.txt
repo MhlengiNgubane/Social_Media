@@ -9,3 +9,4 @@ djangorestframework-simplejwt==5.3.1
 pytest==8.3.3
 pluggy==1.5.0
 pymysql==1.1.1
+channels==4.1.0

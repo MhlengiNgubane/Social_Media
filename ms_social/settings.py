@@ -94,9 +94,9 @@ DATABASES = {
         'HOST':'localhost',
         'PORT':'3307',
         'OPTIONS': {
-            'connect_timeout': 30,  # Increase connection timeout
-            'read_timeout': 30,     # Increase read timeout
-            'write_timeout': 30,    # Increase write timeout
+            'connect_timeout': 60,  # Increase connection timeout
+            'read_timeout': 60,     # Increase read timeout
+            'write_timeout': 60,    # Increase write timeout
         }
     }
 }

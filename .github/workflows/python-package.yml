@@ -30,6 +30,12 @@ jobs:
           --health-interval=10s
           --health-timeout=5s
           --health-retries=5
+          --max-connections=200
+          --max_allowed_packet=256M
+          --wait_timeout=600
+          --interactive_timeout=600
+          --health-cmd="mysqladmin ping -h 127.0.0.1"
+          
 
     steps:
       - uses: actions/checkout@v4

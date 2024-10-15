@@ -78,6 +78,13 @@ class CommentViewSet(viewsets.ModelViewSet):
 
     def perform_destroy(self, instance):
         instance.delete()
+        
+    @action(detail=True, methods=['get'], url_path='comments')
+    def get_comments(self, request, pk=None):
+        post = get_object_or_404(Post, pk=pk)
+        comments = post.comments.all()  # Retrieve all comments for the post
+        serializer = self.get_serializer(comments, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 class LikeViewSet(viewsets.ViewSet):
     permission_classes = [IsAuthenticated]

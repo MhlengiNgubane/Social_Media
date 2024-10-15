@@ -22,15 +22,9 @@ class PostsTest(APITestCase):
             'title': 'New Test Post',
             'content': 'This is the content of the new post.',
             'hashtags': [{'name': 'testhashtag1'}, {'name': 'testhashtag2'}],
-            'tagged_users': []
+            'tagged_users': [self.user1.id, self.user2.id]  # Use the user IDs created in setUp
         }
-
         response = self.client.post(url, data, format='json')
-
-        if response.status_code != status.HTTP_201_CREATED:
-            print("Response status code:", response.status_code)
-            print("Response data:", response.data)
-
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
     def test_read_post(self):

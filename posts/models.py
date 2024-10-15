@@ -1,6 +1,8 @@
 from django.conf import settings
+from django.contrib.auth import get_user_model
 from django.db import models
 
+User = get_user_model()
 
 class Hashtag(models.Model):
     name = models.CharField(max_length=100, unique=True)
@@ -18,7 +20,7 @@ class Post(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     original_post = models.ForeignKey('self', null=True, blank=True, on_delete=models.SET_NULL, related_name='reposts')
     hashtags = models.ManyToManyField(Hashtag, blank=True, related_name='posts')
-    tagged_users = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='tagged_posts', blank=True)
+    tagged_users = models.ManyToManyField(User, related_name='tagged_posts', blank=True)
 
     def __str__(self):
         return self.title

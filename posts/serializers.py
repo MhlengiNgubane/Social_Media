@@ -15,7 +15,7 @@ class HashtagSerializer(serializers.ModelSerializer):
 
 class PostSerializer(serializers.ModelSerializer):
     hashtags = HashtagSerializer(many=True, required=False, allow_empty=True)
-    tagged_users = UserSerializer(many=True, required=False)
+    tagged_users = serializers.PrimaryKeyRelatedField(queryset=User.objects.all(), many=True, required=False)
 
     class Meta:
         model = Post
@@ -27,12 +27,14 @@ class PostSerializer(serializers.ModelSerializer):
         post = Post.objects.create(**validated_data)
 
         self._add_hashtags(post, hashtags_data)
-        self._add_tagged_users(post, tagged_users_data)
+        for user in tagged_users_data:
+            post.tagged_users.add(user)
 
         return post
 
     def update(self, instance, validated_data):
         hashtags_data = validated_data.pop('hashtags', [])
+        tagged_users_data = validated_data.pop('tagged_users', [])
         instance.title = validated_data.get('title', instance.title)
         instance.content = validated_data.get('content', instance.content)
         instance.media = validated_data.get('media', instance.media)
@@ -42,10 +44,9 @@ class PostSerializer(serializers.ModelSerializer):
         instance.hashtags.clear()
         self._add_hashtags(instance, hashtags_data)
 
-        # Optionally update tagged users
-        tagged_users_data = validated_data.pop('tagged_users', [])
         instance.tagged_users.clear()
-        self._add_tagged_users(instance, tagged_users_data)
+        for user in tagged_users_data:
+            instance.tagged_users.add(user)
 
         return instance
 

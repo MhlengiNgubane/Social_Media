@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     "notifications",
     'chat',
     'channels',
+    'taggit',
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -92,6 +93,11 @@ DATABASES = {
         'PASSWORD': 'Ngcukumane@390',
         'HOST':'localhost',
         'PORT':'3307',
+        'OPTIONS': {
+            'connect_timeout': 30,  # Increase connection timeout
+            'read_timeout': 30,     # Increase read timeout
+            'write_timeout': 30,    # Increase write timeout
+        }
     }
 }
 

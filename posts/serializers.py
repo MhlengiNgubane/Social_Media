@@ -2,8 +2,6 @@ from django.conf import settings
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
 
-from users.serializers import UserSerializer
-
 from .models import Comment, Hashtag, Like, Post
 
 User = get_user_model()
@@ -71,7 +69,7 @@ class PostSerializer(serializers.ModelSerializer):
         return instance
 
 class CommentSerializer(serializers.ModelSerializer):
-    tagged_users = UserSerializer(many=True, required=False)
+    tagged_users = serializers.PrimaryKeyRelatedField(queryset=User.objects.all(), many=True, required=False)
 
     class Meta:
         model = Comment
@@ -79,19 +77,16 @@ class CommentSerializer(serializers.ModelSerializer):
         read_only_fields = ['author']  # Make author read-only, set by the viewset
 
     def create(self, validated_data):
-        tagged_users_data = validated_data.pop('tagged_users', [])
+        tagged_users = validated_data.pop('tagged_users', [])
         comment = Comment.objects.create(**validated_data)
-
-        for user_data in tagged_users_data:
-            user_id = user_data.get('id')
-            if user_id:
-                try:
-                    user = settings.AUTH_USER_MODEL.objects.get(id=user_id)
-                    comment.tagged_users.add(user)
-                except User.DoesNotExist:
-                    raise serializers.ValidationError({'tagged_users': f'User with ID {user_id} does not exist.'})
-
+        comment.tagged_users.set(tagged_users)  # Associate the tagged users
         return comment
+
+    def update(self, instance, validated_data):
+        tagged_users = validated_data.pop('tagged_users', [])
+        instance = super().update(instance, validated_data)
+        instance.tagged_users.set(tagged_users)
+        return instance
 
 class LikeSerializer(serializers.ModelSerializer):
     class Meta:

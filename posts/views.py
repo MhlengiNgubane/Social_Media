@@ -58,23 +58,38 @@ class CommentViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]
 
     def perform_create(self, serializer):
-        # Set the author to the currently authenticated user
+        # Create the comment and associate it with the author
         comment = serializer.save(author=self.request.user)
+
+        # Notify the post author
         create_notification(
             recipient=comment.post.author,
             actor=self.request.user,
             verb='commented on your post',
             target=comment
         )
-        
-    def create(self, request, *args, **kwargs):
-        serializer = self.get_serializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        self.perform_create(serializer)
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
 
+        # Notify the tagged users
+        for user in comment.tagged_users.all():
+            create_notification(
+                recipient=user,
+                actor=self.request.user,
+                verb='tagged you in a comment',
+                target=comment
+            )
+    
     def perform_update(self, serializer):
-        serializer.save()
+        # Handle updates to comments (including changes to tagged users)
+        comment = serializer.save()
+
+        # Notify newly tagged users
+        for user in comment.tagged_users.all():
+            create_notification(
+                recipient=user,
+                actor=self.request.user,
+                verb='tagged you in a comment',
+                target=comment
+            )
 
     def perform_destroy(self, instance):
         instance.delete()

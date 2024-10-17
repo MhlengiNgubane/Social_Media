@@ -3,7 +3,9 @@ from django.contrib.auth import get_user_model
 from django.shortcuts import get_object_or_404
 from rest_framework import generics, permissions, status, viewsets
 from rest_framework.authtoken.models import Token
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
+from rest_framework.views import APIView
 
 from notifications.utils import create_notification
 from posts.models import Post
@@ -23,8 +25,15 @@ class LoginView(generics.GenericAPIView):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         user = serializer.validated_data['user']
-        token, _ = Token.objects.get_or_create(user=user)
+        token, created = Token.objects.get_or_create(user=user)
         return Response({'user': UserSerializer(user).data, 'token': token.key}, status=status.HTTP_200_OK)
+    
+class LogoutView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        request.user.auth_token.delete()  # Delete the user's token
+        return Response({"message": "Successfully logged out."}, status=status.HTTP_200_OK)
 
 class UserDetailView(generics.RetrieveUpdateAPIView):
     queryset = User.objects.all()

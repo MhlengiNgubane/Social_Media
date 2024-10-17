@@ -1,6 +1,7 @@
 from django.contrib.auth import get_user_model
 from django.urls import reverse
 from rest_framework import status
+from rest_framework.authtoken.models import Token
 from rest_framework.test import APITestCase
 
 User = get_user_model()
@@ -159,3 +160,19 @@ class UserTest(APITestCase):
 
         # Check that the follower count decreased
         self.assertEqual(self.user2.followers.count(), 0, "Follower count should be 0 after unfollowing.")
+        
+    def test_logout(self):
+        # Ensure the user is authenticated before the logout
+        self.client.credentials(HTTP_AUTHORIZATION='Token ' + self.token)  # Set token in the header
+        response = self.client.get(reverse('user-detail', kwargs={'pk': self.user1.id}))  # Use self.user1.id
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        
+        # Now test the logout
+        response = self.client.post(reverse('logout'))
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data, {'message': 'Successfully logged out.'})
+
+        # Ensure the token no longer works for authenticated requests
+        self.client.credentials()  # Remove the token from the headers
+        response = self.client.get(reverse('user-detail', kwargs={'pk': self.user1.id}))  # Use self.user1.id
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)

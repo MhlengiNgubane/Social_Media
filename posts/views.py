@@ -123,7 +123,7 @@ class LikeViewSet(viewsets.ViewSet):
                     verb='liked your post',
                     target=post
                 )
-            return Response({'message': 'Post liked!', 'id': like.id}, status=status.HTTP_201_CREATED)  # Return the like ID
+            return Response({'message': 'liked!', 'id': like.id}, status=status.HTTP_201_CREATED)  # Return the like ID
         return Response({'message': 'Already liked!'}, status=status.HTTP_400_BAD_REQUEST)
 
     def destroy(self, request, pk=None):

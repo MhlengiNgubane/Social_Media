@@ -46,6 +46,14 @@ jobs:
         run: |
           flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
           flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+      - name: Start MySQL with increased connections
+        run: |
+          docker run -d \
+            --name mysql \
+            -e MYSQL_ROOT_PASSWORD=Ngcukumane@390 \
+            -e MYSQL_DATABASE=social \
+            -p 3307:3307 \
+            mysql:8.0
       - name: Wait for MySQL to be ready
         run: |
           for i in `seq 1 30`; do

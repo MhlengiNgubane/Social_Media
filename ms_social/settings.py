@@ -91,7 +91,7 @@ DATABASES = {
         'NAME': 'social',
         'USER': 'root',
         'PASSWORD': 'Ngcukumane@390',
-        'HOST':'localhost',
+        'HOST':'127.0.0.1', # Or 'localhost'
         'PORT':'3307',
         'OPTIONS': {
             'connect_timeout': 60,  # Increase connection timeout

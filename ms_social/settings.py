@@ -24,7 +24,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = "django-insecure-=^zcmnz_39-a@8^plabgxa#b4rwhpflp1jck8$4e!y@!j0ky)d"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = []
 
@@ -89,7 +89,7 @@ WSGI_APPLICATION = "ms_social.wsgi.application"
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'social',
+        'NAME': 'social_db',
         'USER': 'root',
         'PASSWORD': 'Ngcukumane@390',
         'HOST':'127.0.0.1', # Or 'localhost'

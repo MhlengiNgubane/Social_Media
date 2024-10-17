@@ -22,7 +22,7 @@ jobs:
         image: mysql:8.0
         env:
           MYSQL_ROOT_PASSWORD: Ngcukumane@390
-          MYSQL_DATABASE: social
+          MYSQL_DATABASE: social_db
         ports:
           - 3307:3307
         options: >-

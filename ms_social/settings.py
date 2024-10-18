@@ -87,18 +87,9 @@ WSGI_APPLICATION = "ms_social.wsgi.application"
 
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'social_db',
-        'USER': 'root',
-        'PASSWORD': 'Ngcukumane@390',
-        'HOST':'127.0.0.1', # Or 'localhost'
-        'PORT':'3307',
-        'OPTIONS': {
-            'connect_timeout': 60,  # Increase connection timeout
-            'read_timeout': 60,     # Increase read timeout
-            'write_timeout': 60,    # Increase write timeout
-        }
+    "default": {
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": BASE_DIR / "db.sqlite3",
     }
 }
 
@@ -157,9 +148,3 @@ REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 10
 }
-
-# Security settings
-SECURE_BROWSER_XSS_FILTER = True
-X_FRAME_OPTIONS = 'DENY'
-SECURE_CONTENT_TYPE_NOSNIFF = True
-SECURE_SSL_REDIRECT = True  # Redirect all HTTP to HTTPS

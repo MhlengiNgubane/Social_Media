@@ -1,4 +1,5 @@
-from rest_framework import permissions, viewsets
+from rest_framework import permissions, status, viewsets
+from rest_framework.decorators import action
 from rest_framework.response import Response
 
 from .models import Notification
@@ -23,3 +24,15 @@ class NotificationViewSet(viewsets.ReadOnlyModelViewSet):
             'notifications': serializer.data,
             'unread_count': unread_notifications.count()
         })
+
+@action(detail=True, methods=['post'], url_path='mark-as-read')
+def mark_as_read(self, request, pk=None):
+        # Get the specific notification by ID
+        notification = self.get_object()
+
+        # Mark the notification as read
+        notification.is_read = True
+        notification.save()
+
+        # Return a success response
+        return Response({"message": "Notification marked as read."}, status=status.HTTP_200_OK)
